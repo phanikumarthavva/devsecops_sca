@@ -1,0 +1,54 @@
+pipeline {
+  agent any
+
+  environment {
+    IMAGE_REPO = "docker.io/YOUR_DOCKERHUB_USERNAME/hello-devops"
+    IMAGE_TAG  = "${env.BUILD_NUMBER}"
+    DOCKER_CRED = "dockerhub-creds"
+    KUBECONFIG_CRED = "do-kubeconfig"
+  }
+
+  stages {
+    stage('Checkout') {
+      steps { checkout scm }
+    }
+
+    stage('Build') {
+      steps {
+        sh """
+          docker build -t ${IMAGE_REPO}:${IMAGE_TAG} .
+          docker tag ${IMAGE_REPO}:${IMAGE_TAG} ${IMAGE_REPO}:latest
+        """
+      }
+    }
+
+    stage('Push to Docker Hub') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: "${DOCKER_CRED}", usernameVariable: 'DH_USER', passwordVariable: 'DH_PASS')]) {
+          sh """
+            echo "$DH_PASS" | docker login -u "$DH_USER" --password-stdin
+            docker push ${IMAGE_REPO}:${IMAGE_TAG}
+            docker push ${IMAGE_REPO}:latest
+          """
+        }
+      }
+    }
+
+    stage('Deploy to DO Kubernetes') {
+      steps {
+        withCredentials([file(credentialsId: "${KUBECONFIG_CRED}", variable: 'KUBECONFIG_FILE')]) {
+          sh """
+            export KUBECONFIG=$KUBECONFIG_FILE
+
+            # Update the image in the manifest to the build tag
+            sed -i 's|image:.*|image: ${IMAGE_REPO}:${IMAGE_TAG}|g' k8s/deployment.yaml
+
+            kubectl apply -f k8s/
+            kubectl rollout status deployment/hello-devops
+            kubectl get svc hello-devops-svc
+          """
+        }
+      }
+    }
+  }
+}
