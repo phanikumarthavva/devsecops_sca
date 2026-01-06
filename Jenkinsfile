@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    IMAGE_REPO = "docker.io/YOUR_DOCKERHUB_USERNAME/hello-devops"
+    IMAGE_REPO = "docker.io/phanikumart/devsecops"
     IMAGE_TAG  = "${env.BUILD_NUMBER}"
     DOCKER_CRED = "dockerhub-creds"
     KUBECONFIG_CRED = "do-kubeconfig"

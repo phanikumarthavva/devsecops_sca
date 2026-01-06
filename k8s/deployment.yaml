@@ -15,7 +15,7 @@ spec:
         app: dep-devsecops
     spec:
       containers:
-      - image: docker.io/devsecops/devsecops:latest
+      - image: docker.io/phanikumart/devsecops:latest
         name: devsecops
         ports:
           - containerPort: 80
