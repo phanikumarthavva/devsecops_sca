@@ -44,8 +44,8 @@ pipeline {
             sed -i 's|image:.*|image: ${IMAGE_REPO}:${IMAGE_TAG}|g' k8s/deployment.yaml
 
             kubectl apply -f k8s/
-            kubectl rollout status deployment/hello-devops
-            kubectl get svc hello-devops-svc
+            kubectl rollout status deployment/dep-devsecops
+            kubectl get svc svc-devsecops
           """
         }
       }
