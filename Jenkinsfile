@@ -40,7 +40,7 @@ pipeline {
           sh """
             export KUBECONFIG=$KUBECONFIG_FILE
 
-            # Update the image in the manifest to the build tag, Restart
+            # Update the image in the manifest to the build tag, Restart1
             sed -i 's|image:.*|image: ${IMAGE_REPO}:${IMAGE_TAG}|g' k8s/deployment.yaml
 
             kubectl apply -f k8s/
