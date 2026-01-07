@@ -38,9 +38,9 @@ pipeline {
       steps {
         withCredentials([file(credentialsId: "${KUBECONFIG_CRED}", variable: 'KUBECONFIG_FILE')]) {
           sh """
-            export KUBECONFIG=$KUBECONFIG_FILE
+            export KUBECONFIG="$KUBECONFIG_FILE"
 
-            # Update the image in the manifest to the build tag, Restart2
+            # Update the image in the manifest to the build tag, Restart3
             sed -i 's|image:.*|image: ${IMAGE_REPO}:${IMAGE_TAG}|g' k8s/deployment.yaml
 
             kubectl apply -f k8s/
