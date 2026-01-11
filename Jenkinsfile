@@ -5,7 +5,7 @@ pipeline {
     IMAGE_REPO = "docker.io/phanikumart/devsecops"
     IMAGE_TAG  = "${env.BUILD_NUMBER}"
     DOCKER_CRED = "dockerhub-creds"
-    KUBECONFIG_CRED = "do-kubeconfig"
+    //KUBECONFIG_CRED = "do-kubeconfig"
   }
 
   stages {
@@ -33,7 +33,7 @@ pipeline {
         }
       }
     }
-
+    /*
     stage('Deploy to DO Kubernetes') {
       steps {
         withCredentials([file(credentialsId: "${KUBECONFIG_CRED}", variable: 'KUBECONFIG_FILE')]) {
@@ -50,5 +50,6 @@ pipeline {
         }
       }
     }
+	*/
   }
 }

@@ -1,2 +1,1 @@
-FROM nginx:alpine
-COPY index.html /usr/share/nginx/html/index.html
+FROM docker.io/dnurmi/testrepo:jarjar
