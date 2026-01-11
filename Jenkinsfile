@@ -33,7 +33,7 @@ pipeline {
         }
       }
     }
-	#updated jenkins dependencyCheck
+	# updated jenkins dependencyCheck
 	stage('OWASP Dependency-Check Vulnerabilities') {
       steps {
         dependencyCheck additionalArguments: ''' 
